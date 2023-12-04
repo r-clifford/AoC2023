@@ -3,7 +3,8 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-int check_adj(const std::vector<std::vector<int>>& values, size_t i, size_t j) {
+int check_adj1(const std::vector<std::vector<int>>& values, size_t i,
+               size_t j) {
   int result = 0;
   std::unordered_set<int> set;
   for (size_t a = i - 1; a <= i + 1; a++) {
@@ -20,6 +21,30 @@ int check_adj(const std::vector<std::vector<int>>& values, size_t i, size_t j) {
     }
   }
   return result;
+}
+int check_adj2(const std::vector<std::vector<int>>& values, size_t i,
+               size_t j) {
+  int result = 0;
+  std::unordered_set<int> set;
+  for (size_t a = i - 1; a <= i + 1; a++) {
+    for (size_t b = j - 1; b <= j + 1; b++) {
+      try {
+        int tmp = values[a][b];
+        if (tmp && set.find(tmp) == set.end()) {
+          result += tmp;
+          set.insert(tmp);
+        }
+      } catch (const std::out_of_range& _) {
+        continue;
+      }
+    }
+  }
+  if (set.size() == 2) {
+    auto it = set.begin();
+    result = *(it++);
+    return result * *it;
+  }
+  return 0;
 }
 int parse_matrix(const std::vector<std::string>& matrix) {
   std::vector<std::vector<int>> value_matrix;
@@ -58,7 +83,7 @@ int parse_matrix(const std::vector<std::string>& matrix) {
     for (size_t j = 0; j < matrix[0].size(); j++) {
       char tmp = matrix[i][j];
       if (tmp != '.' && std::ispunct(tmp)) {
-        int part = check_adj(value_matrix, i, j);
+        int part = check_adj2(value_matrix, i, j);
         sum += part;
       }
     }
@@ -76,5 +101,5 @@ int main() {
     matrix.push_back(tmp);
   }
 
-  std::cout << parse_matrix(matrix) << std::endl;  // 497027 low
+  std::cout << parse_matrix(matrix) << std::endl;
 }
