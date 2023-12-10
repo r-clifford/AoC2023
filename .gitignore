@@ -1,3 +1,5 @@
+# inputs
+*.txt
 # Prerequisites
 *.d
 
@@ -54,4 +56,4 @@ dkms.conf
 
 # Added by cargo
 
-/target
+*target/
