@@ -21,6 +21,7 @@ fn main() -> io::Result<()> {
             .split(" ")
             .map(|s| i64::from_str_radix(s, 10).unwrap())
             .collect::<Vec<i64>>();
+        start.reverse(); // for part 2
         histories.push(start.clone());
         while start.iter().fold(false, |acc, n| acc || (*n != 0i64)) {
             start = differences(&start);
@@ -38,7 +39,7 @@ fn main() -> io::Result<()> {
         let end = histories[0].len() - 1;
         total += histories[0][end];
     }
-    println!("{}", total); // 1901217887
+    println!("{}", total); // 1901217887, 905
 
     Ok(())
 }
